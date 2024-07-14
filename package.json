@@ -1,0 +1,31 @@
+{
+  "name": "penguist",
+  "version": "0.0.1",
+  "main": "dist/index.cjs",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "type": "module",
+  "scripts": {
+    "build-pack": "rollup -c",
+    "lint": "biome lint src",
+    "release": "bun build-pack && bun changeset publish"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^1.8.3",
+    "@rollup/plugin-node-resolve": "^15.2.3",
+    "@rollup/plugin-terser": "^0.4.4",
+    "@rollup/plugin-typescript": "^11.1.6",
+    "@types/bun": "latest",
+    "@types/uuid": "^10.0.0",
+    "rollup": "^4.18.0",
+    "rollup-plugin-summary": "^2.0.1",
+    "tslib": "^2.6.3"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "lit": "^3.1.4",
+    "uuid": "^10.0.0"
+  }
+}
