@@ -1,9 +1,18 @@
-import { html, LitElement, type PropertyValues } from 'lit'
+import { css, html, LitElement, type PropertyValues } from 'lit'
 import { property, state } from 'lit/decorators.js'
 import type Slide from './slide'
 import defaultShortcuts from '../defaultShortcuts'
 
 export default class Present extends LitElement {
+  static styles = css`
+    :host {
+      user-select: none;
+      -moz-user-select: none;
+      -webkit-user-select: none;
+      -ms-user-select: none;
+    }
+  `
+
   @property({ attribute: 'selected-index', reflect: true })
   selectedIndex = 0
 
@@ -13,14 +22,14 @@ export default class Present extends LitElement {
   @state()
   protected selectedSlotName?: string
 
-  protected useShortcuts() {
-    defaultShortcuts()
-  }
-
-  connectedCallback() {
-    super.connectedCallback()
+  constructor() {
+    super()
 
     this.useShortcuts()
+  }
+
+  protected useShortcuts() {
+    defaultShortcuts(this)
   }
 
   protected willUpdate(changedProperties: PropertyValues): void {
