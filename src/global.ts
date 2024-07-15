@@ -1,5 +1,8 @@
+import penguist_ from './penguist'
+
 declare global {
   function penguist(): void
-  function defaultShortcuts(): void
 }
+
+globalThis.penguist = penguist_
 

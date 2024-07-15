@@ -5,5 +5,3 @@ export default function penguist() {
   customElements.define('p-slide', Slide)
 }
 
-globalThis.penguist = penguist
-
