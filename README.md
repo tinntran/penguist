@@ -1,5 +1,4 @@
 <div>
-  <img src="assets/temporary_logo.png" alt="temporary_logo">
   <img src="assets/penguist.svg" alt="logo">
 </div>
 
