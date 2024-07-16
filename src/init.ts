@@ -1,6 +1,6 @@
 import { Present, Slide } from './elements'
 
-export default function penguist() {
+export default function init() {
   customElements.define('p-present', Present)
   customElements.define('p-slide', Slide)
 }
