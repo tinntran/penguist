@@ -1,10 +1,15 @@
-<div>
-  <img src="assets/penguist.svg" alt="logo">
-</div>
+<img align="left" src="assets/penguist.svg" width="128" alt="logo">
 
-Why?
----
-- ~Fuck Microsoft Powerpoint~
-- Write code to make a slideshow instead of the drag-and-drop means
-- Embeddable as a `<script>` tag
+# Penguist
+> An embeddable presenation library
+
+<br>
+
+```md
+# Penguist
+> Free
+> Open source
+> Embeddable
+# Be like Penguist
+```
 
