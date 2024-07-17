@@ -32,8 +32,8 @@ export class TemplateCreator extends Creator {
     }
   }
 
-  define(prefix: string = 'ptemp') {
-    super.define(prefix)
+  define(prefix: string = 'ptemp'): CustomElementConstructor | undefined {
+    return super.define(prefix)
   }
 }
 

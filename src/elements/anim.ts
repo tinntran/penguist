@@ -1,7 +1,7 @@
 import { css, html, LitElement } from 'lit'
 import { property } from 'lit/decorators.js'
 
-export class Anim extends LitElement {
+export default class Anim extends LitElement {
   static styles = css`
     :host {
       display: block;

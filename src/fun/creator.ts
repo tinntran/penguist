@@ -13,6 +13,8 @@ export default class Creator {
 
     if (this.targetElement) customElements.define(`${prefix}-${this.name}`, this.targetElement)
     else console.error(`Could not define custom element: ${prefix}-${this.name} owing to the undefined targetElement member`)
+
+    return this.targetElement
   }
 }
 
