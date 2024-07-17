@@ -1,15 +1,16 @@
 import { LitElement } from 'lit'
 import { Template } from './elements'
 
-export default function createTemplate(name: string, template: string): typeof LitElement {
+export default function createTemplate(name: string, template?: string): typeof LitElement {
   class MyTemplate extends Template {
     constructor() {
       super()
-      this.template = template
+
+      if (template) this.template = template
     }
   }
 
-  customElements.define(`ptemp-${name}`, MyTemplate)
+  if (template) customElements.define(`ptemp-${name}`, MyTemplate)
 
   return MyTemplate
 }

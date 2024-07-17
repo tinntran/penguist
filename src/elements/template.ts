@@ -1,36 +1,37 @@
 import { LitElement, type PropertyValues } from 'lit'
-import { property } from 'lit/decorators.js'
+import { state } from 'lit/decorators.js'
 import Mustache from 'mustache'
 
 export default class Template extends LitElement {
-  @property({ attribute: false })
-  viewAttributes: object = {}
+  @state()
+  protected viewAttributes: object = {}
 
-  @property({ attribute: false })
-  template = ''
+  @state()
+  protected template = ''
 
-  protected willUpdate(changedProperties: PropertyValues) {
-    super.willUpdate(changedProperties)
+  private snakeToCamel(str: string): string {
+    return str.replace(/([-][a-z])/g, group =>
+      group
+        .toUpperCase()
+        .replace('-', '')
+    )
+  }
+
+  connectedCallback() {
+    super.connectedCallback()
 
     for (let i = 0; i < this.attributes.length; i++) {
       this.viewAttributes = {
         ...this.viewAttributes,
-        [this.attributes[i].name
-          .replace(/^view-/, '')
-          .replace(/([-][a-z])/g, group =>
-            group
-              .toUpperCase()
-              .replace('-', '')
-          )
-        ]: this.attributes[i].value
+        [this.snakeToCamel(this.attributes[i].name.replace(/^view-/, ''))]: this.attributes[i].value
       }
     }
   }
 
-  protected update(changedProperties: PropertyValues) {
-    super.update(changedProperties)
+  protected willUpdate(changedProperties: PropertyValues) {
+    super.willUpdate(changedProperties)
 
-    if (this.shadowRoot && changedProperties.get('viewAttributes') !== this.viewAttributes) {
+    if (this.shadowRoot) {
       this.shadowRoot.innerHTML = Mustache.render(this.template, this.viewAttributes)
     }
   }
