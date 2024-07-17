@@ -1,7 +1,7 @@
 <svg width="310" height="310" xmlns="http://www.w3.org/2000/svg">
-  <link xmlns="http://www.w3.org/1999/xhtml" rel="preconnect" href="https://fonts.googleapis.com">
-  <link xmlns="http://www.w3.org/1999/xhtml" rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link xmlns="http://www.w3.org/1999/xhtml" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+  <link xmlns="http://www.w3.org/1999/xhtml" rel="preconnect" href="https://fonts.googleapis.com" />
+  <link xmlns="http://www.w3.org/1999/xhtml" rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link xmlns="http://www.w3.org/1999/xhtml" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet" />
     
   <rect width="256" height="256" x="45" y="2" fill="#ccc" rx="1" stroke="#333" stroke-width="5" transform="rotate(2)" />
   <rect width="256" height="256" x="5" y="45" fill="#eee" rx="1" stroke="#333" stroke-width="5" transform="rotate(-2)" />
