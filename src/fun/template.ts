@@ -2,7 +2,7 @@ import { Template } from '../elements'
 import Creator from './creator'
 
 export class TemplateCreator extends Creator {
-  private template: string = ''
+  private template = ''
   private styles?: string
   
   html(template: string) {
@@ -32,7 +32,7 @@ export class TemplateCreator extends Creator {
     }
   }
 
-  define(prefix: string = 'ptemp'): CustomElementConstructor | undefined {
+  define(prefix = 'ptemp'): CustomElementConstructor | undefined {
     return super.define(prefix)
   }
 }

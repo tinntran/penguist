@@ -9,7 +9,14 @@ export const fadeCreator = anim('fade')
       opacity: '1'
     }
   ])
-  .opts(1000)
+  .onplay((anim, fade) => {
+    if (fade.direction === 'reverse' || fade.direction === 'alternate-reverse') {
+      anim.finished.then(() => fade.style.opacity = '0')
+    }
+  })
+  .opts({
+    duration: 1000
+  })
 
 export default fadeCreator.define()
 

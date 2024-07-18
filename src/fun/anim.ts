@@ -3,8 +3,8 @@ import Creator from './creator'
 
 export class AnimCreator extends Creator {
   private keyframes: Keyframe[] | PropertyIndexedKeyframes | null = null
-  private options?: number | KeyframeAnimationOptions
-  private onplayFunc?: (anim: Animation) => void
+  private options?: KeyframeAnimationOptions
+  private onplayFunc?: (anim: Animation, element: Anim) => void
 
   frames(keyframes: Keyframe[] | PropertyIndexedKeyframes | null) {
     this.keyframes = keyframes
@@ -12,13 +12,13 @@ export class AnimCreator extends Creator {
     return this
   }
 
-  opts(options: number | KeyframeAnimationOptions) {
+  opts(options: KeyframeAnimationOptions) {
     this.options = options
 
     return this
   }
 
-  onplay(onplayFunc: (anim: Animation) => void) {
+  onplay(onplayFunc: (anim: Animation, element: Anim) => void) {
     this.onplayFunc = onplayFunc
 
     return this
@@ -39,14 +39,14 @@ export class AnimCreator extends Creator {
       play(): Animation {
         const anim = super.play()
 
-        if (onplayFunc) onplayFunc(anim)
+        if (onplayFunc) onplayFunc(anim, this)
 
         return anim
       }
     }
   }
 
-  define(prefix: string = 'panim'): CustomElementConstructor | undefined {
+  define(prefix = 'panim'): CustomElementConstructor | undefined {
     return super.define(prefix)
   }
 }

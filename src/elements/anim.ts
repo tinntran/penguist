@@ -11,22 +11,37 @@ export default class Anim extends LitElement {
   @property({ reflect: true })
   duration?: string | number | CSSNumericValue
 
-  protected keyframes: Keyframe[] | PropertyIndexedKeyframes | null 
-  protected options?: number | KeyframeAnimationOptions
+  @property({ type: Number, reflect: true })
+  delay?: number
 
-  constructor(keyframes: Keyframe[] | PropertyIndexedKeyframes | null, options?: number | KeyframeAnimationOptions) {
+  @property({ type: Number, reflect: true })
+  iterations?: number
+
+  @property({ reflect: true })
+  direction?: PlaybackDirection
+
+  protected keyframes: Keyframe[] | PropertyIndexedKeyframes | null 
+  protected options?: KeyframeAnimationOptions
+
+  constructor(keyframes: Keyframe[] | PropertyIndexedKeyframes | null, options?: KeyframeAnimationOptions) {
     super()
 
     this.keyframes = keyframes
     this.options = options
 
-    if (typeof this.options !== 'number') this.duration = this.options?.duration
+    this.duration = this.options?.duration
+    this.delay = this.options?.delay
+    this.iterations = this.options?.iterations
+    this.direction = this.options?.direction
   }
 
   play(): Animation {
-    const anim = this.animate(this.keyframes, typeof this.options === 'number' ? this.options : {
+    const anim = this.animate(this.keyframes, {
       ...this.options,
       duration: this.duration,
+      delay: this.delay,
+      iterations: this.iterations,
+      direction: this.direction,
     })
 
     return anim
