@@ -1,4 +1,3 @@
-import type { PropertyValues } from 'lit'
 import { Anim } from '../elements'
 import Creator from './creator'
 
@@ -45,13 +44,9 @@ export class AnimCreator extends Creator {
         super(keyframes, options)
       }
 
-      protected firstUpdated(changedProperties: PropertyValues) {
-        super.firstUpdated(changedProperties)
-
-        if (beforePlayingFunc) beforePlayingFunc(this)
-      }
-
       play(): Animation {
+        if (beforePlayingFunc) beforePlayingFunc(this)
+
         const anim = super.play()
 
         if (whenPlayingFunc) whenPlayingFunc(anim, this)
