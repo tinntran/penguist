@@ -9,10 +9,19 @@ export const fadeCreator = anim('fade')
       opacity: '1'
     }
   ])
-  .onplay((anim, fade) => {
-    if (fade.direction === 'reverse' || fade.direction === 'alternate-reverse') {
-      anim.finished.then(() => fade.style.opacity = '0')
+  .beforePlaying(fade => {
+    if (fade.direction === 'normal' || fade.direction === 'alternate' || !fade.direction) {
+      fade.style.opacity = '0'
     }
+  })
+  .whenPlaying((anim, fade) => {
+    anim.finished.then(() => {
+      if (fade.direction === 'reverse' || fade.direction === 'alternate-reverse') {
+        fade.style.opacity = '0'
+      } else {
+        fade.style.opacity = ''
+      }
+    })
   })
   .opts({
     duration: 1000

@@ -1,10 +1,12 @@
+import type { PropertyValues } from 'lit'
 import { Anim } from '../elements'
 import Creator from './creator'
 
 export class AnimCreator extends Creator {
   private keyframes: Keyframe[] | PropertyIndexedKeyframes | null = null
   private options?: KeyframeAnimationOptions
-  private onplayFunc?: (anim: Animation, element: Anim) => void
+  private whenPlayingFunc?: (anim: Animation, element: Anim) => void
+  private beforePlayingFunc?: (element: Anim) => void
 
   frames(keyframes: Keyframe[] | PropertyIndexedKeyframes | null) {
     this.keyframes = keyframes
@@ -18,8 +20,14 @@ export class AnimCreator extends Creator {
     return this
   }
 
-  onplay(onplayFunc: (anim: Animation, element: Anim) => void) {
-    this.onplayFunc = onplayFunc
+  beforePlaying(beforePlayingFunc: (element: Anim) => void) {
+    this.beforePlayingFunc = beforePlayingFunc
+
+    return this
+  }
+
+  whenPlaying(whenPlayingFunc: (anim: Animation, element: Anim) => void) {
+    this.whenPlayingFunc = whenPlayingFunc
 
     return this
   }
@@ -28,7 +36,8 @@ export class AnimCreator extends Creator {
     super.willDefine()
 
     const keyframes = this.keyframes
-    const onplayFunc = this.onplayFunc
+    const whenPlayingFunc = this.whenPlayingFunc
+    const beforePlayingFunc = this.beforePlayingFunc
     const options = this.options
 
     this.targetElement = class extends Anim {
@@ -36,10 +45,16 @@ export class AnimCreator extends Creator {
         super(keyframes, options)
       }
 
+      protected firstUpdated(changedProperties: PropertyValues) {
+        super.firstUpdated(changedProperties)
+
+        if (beforePlayingFunc) beforePlayingFunc(this)
+      }
+
       play(): Animation {
         const anim = super.play()
 
-        if (onplayFunc) onplayFunc(anim, this)
+        if (whenPlayingFunc) whenPlayingFunc(anim, this)
 
         return anim
       }
