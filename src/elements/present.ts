@@ -2,6 +2,7 @@ import { css, html, LitElement, type PropertyValues } from 'lit'
 import { property, state } from 'lit/decorators.js'
 import type Slide from './slide'
 import defaultShortcuts from '../defaultShortcuts'
+import { SlideSelectedEvent, SlideUnselectedEvent } from '../events'
 
 export default class Present extends LitElement {
   static styles = css`
@@ -35,9 +36,25 @@ export default class Present extends LitElement {
   protected willUpdate(changedProperties: PropertyValues): void {
     super.willUpdate(changedProperties)
 
+
     if (changedProperties.get('selectedIndex') !== this.selectedIndex) {
       this.selectedSlotName = this.slotNames[this.selectedIndex]
     }
+
+    const selectedSlide = this.querySelector<Slide>(`p-slide[slot="${this.selectedSlotName}"]`)
+    const unselectedSlide = this.querySelector<Slide>(`p-slide[slot="${changedProperties.get('selectedSlotName')}"]`)
+
+    selectedSlide?.dispatchEvent(new SlideSelectedEvent({
+      bubbles: true,
+      composed: true,
+      detail: selectedSlide
+    }))
+
+    unselectedSlide?.dispatchEvent(new SlideUnselectedEvent({
+      bubbles: true,
+      composed: true,
+      detail: unselectedSlide
+    }))
   }
 
   protected firstUpdated(changedProperties: PropertyValues): void {

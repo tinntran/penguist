@@ -1,5 +1,6 @@
 import { css, html, LitElement } from 'lit'
 import { property } from 'lit/decorators.js'
+import { v4 } from 'uuid'
 
 export default class Anim extends LitElement {
   static styles = css`
@@ -7,6 +8,9 @@ export default class Anim extends LitElement {
       display: block;
     }
   `
+
+  @property({ attribute: 'anim-id', reflect: true })
+  animId = v4()
 
   @property({ reflect: true })
   duration?: string | number | CSSNumericValue
