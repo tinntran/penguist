@@ -42,6 +42,7 @@ export default class Anim extends LitElement {
   play(): Animation {
     const anim = this.animate(this.keyframes, {
       ...this.options,
+      id: this.animId,
       duration: this.duration,
       delay: this.delay,
       iterations: this.iterations,
@@ -52,7 +53,17 @@ export default class Anim extends LitElement {
   }
 
   finish() {
+    if (this.iterations === Infinity) return
+
     this.getAnimations().map(anim => anim.finish())
+  }
+
+  pause() {
+    this.getAnimations().map(anim => anim.pause())
+  }
+
+  cancel() {
+    this.getAnimations().map(anim => anim.cancel())
   }
 
   protected render() {
