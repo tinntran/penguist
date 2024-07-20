@@ -8,6 +8,8 @@ export default class Slide extends LitElement {
   @property({ attribute: false })
   remainingAnimation = 0
 
+  protected timeoutIds: Timer[] = []
+
   constructor() {
     super()
     this.slot = this.slot ? this.slot : v4()
@@ -31,8 +33,11 @@ export default class Slide extends LitElement {
         console.warn('TODO: NOT IMPLEMENTED')
 
       } else if (anim.start === 'after-prev') {
-        if (prev && !Number.isNaN(Number(prev.duration))) setTimeout(() => this.playAnim(anim), Number(prev.duration))
-        else this.playAnim(anim)
+        if (prev && !Number.isNaN(Number(prev.duration))) {
+          const timeout = setTimeout(() => this.playAnim(anim), Number(prev.duration))
+
+          this.timeoutIds.push(timeout)
+        } else this.playAnim(anim)
 
       } else {
         this.playAnim(anim)
@@ -41,6 +46,7 @@ export default class Slide extends LitElement {
   }
 
   protected slideUnselected() {
+    clearTimeout(this.timeoutIds.pop())
     Array.from(this.querySelectorAll<Anim>('[anim-id]'), anim => anim.finish())
   }
 
