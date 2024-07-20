@@ -44,14 +44,16 @@ export class AnimCreator extends Creator {
         super(keyframes, options)
       }
 
-      play(): Animation {
+      beforePlaying() {
         if (beforePlayingFunc) beforePlayingFunc(this)
+      }
 
-        const anim = super.play()
-
+      whenPlaying(anim: Animation) {
         if (whenPlayingFunc) whenPlayingFunc(anim, this)
+      }
 
-        return anim
+      play(): Animation {
+        return super.play()
       }
     }
   }

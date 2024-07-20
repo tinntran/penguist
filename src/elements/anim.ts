@@ -2,12 +2,17 @@ import { css, html, LitElement } from 'lit'
 import { property } from 'lit/decorators.js'
 import { v4 } from 'uuid'
 
+export type AnimStart = 'on-click' | 'with-prev' | 'after-prev'
+
 export default class Anim extends LitElement {
   static styles = css`
     :host {
       display: block;
     }
   `
+
+  @property({ reflect: true })
+  start: AnimStart = 'on-click'
 
   @property({ attribute: 'anim-id', reflect: true })
   animId = v4()
@@ -39,6 +44,10 @@ export default class Anim extends LitElement {
     this.direction = this.options?.direction
   }
 
+  beforePlaying() {}
+
+  whenPlaying(_anim: Animation) {}
+
   play(): Animation {
     const anim = this.animate(this.keyframes, {
       ...this.options,
@@ -49,11 +58,13 @@ export default class Anim extends LitElement {
       direction: this.direction,
     })
 
+    this.whenPlaying(anim)
+
     return anim
   }
 
   finish() {
-    if (this.iterations === Infinity) return
+    if (this.iterations === Number.POSITIVE_INFINITY) return
 
     this.getAnimations().map(anim => anim.finish())
   }
