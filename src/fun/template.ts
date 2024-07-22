@@ -17,13 +17,10 @@ export class TemplateCreator extends Creator {
     return this
   }
 
-  protected willDefine() {
-    super.willDefine()
+  configureTargetElement(): CustomElementConstructor | undefined {
+    const { styles, template } = this
 
-    const template = this.template
-    const styles = this.styles
-
-    this.targetElement = class extends Template {
+    return class extends Template {
       constructor() {
         super()
 

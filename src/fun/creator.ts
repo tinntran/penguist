@@ -1,20 +1,21 @@
 export default class Creator {
   name: string
-  targetElement?: CustomElementConstructor
 
   constructor(name: string) {
     this.name = name
   }
 
-  protected willDefine() {}
+  configureTargetElement(): CustomElementConstructor | undefined {
+    return undefined
+  }
 
   define(prefix: string) {
-    this.willDefine()
+    const target = this.configureTargetElement()
 
-    if (this.targetElement) customElements.define(`${prefix}-${this.name}`, this.targetElement)
+    if (target) customElements.define(`${prefix}-${this.name}`, target)
     else console.error(`Could not define custom element: ${prefix}-${this.name} owing to the undefined targetElement member`)
 
-    return this.targetElement
+    return target
   }
 }
 

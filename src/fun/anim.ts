@@ -31,15 +31,10 @@ export class AnimCreator extends Creator {
     return this
   }
 
-  protected willDefine() {
-    super.willDefine()
+  configureTargetElement(): CustomElementConstructor | undefined {
+    const { keyframes, options, beforePlayingFunc, whenPlayingFunc } = this
 
-    const keyframes = this.keyframes
-    const whenPlayingFunc = this.whenPlayingFunc
-    const beforePlayingFunc = this.beforePlayingFunc
-    const options = this.options
-
-    this.targetElement = class extends Anim {
+    return class extends Anim {
       constructor() {
         super(keyframes, options)
       }

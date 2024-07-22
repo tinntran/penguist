@@ -1,6 +1,6 @@
 import { anim } from '../fun'
 
-export const fadeCreator = anim('fade')
+export const fade = anim('fade')
   .frames([
     {
       opacity: '0'
@@ -27,5 +27,5 @@ export const fadeCreator = anim('fade')
     duration: 1000
   })
 
-export default fadeCreator.define()
+export default fade.configureTargetElement()
 
