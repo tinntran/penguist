@@ -20,8 +20,8 @@ export default class Present extends LitElement {
   @property({ attribute: false })
   slotNames: string[] = []
 
-  @state()
-  protected selectedSlotName?: string
+  @property({ attribute: false })
+  selectedSlotName?: string
 
   constructor() {
     super()

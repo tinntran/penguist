@@ -6,49 +6,54 @@ import { property } from 'lit/decorators.js'
 
 export default class Slide extends LitElement {
   @property({ attribute: false })
-  remainingAnimation = 0
-
-  protected timeoutIds: Timer[] = []
+  remainingAnims = 0
 
   constructor() {
     super()
     this.slot = this.slot ? this.slot : v4()
   }
 
-  private playAnim(anim: Anim) {
-    anim.play().finished.then(() => this.remainingAnimation--)
+  getAnims() {
+    return this.querySelectorAll<Anim>('[anim-id]')
   }
 
-  protected slideSelected() {
-    const animEls = this.querySelectorAll<Anim>('[anim-id]')
+  private playAnim(anim: Anim, next?: Anim) {
+    function slideUnselected(reject: (reason?: unknown) => void) {
+      reject("The animation has been stopped")
+    }
 
-    this.remainingAnimation = animEls.length
+    return new Promise<void>((resolve, reject) => {
+      this.addEventListener(SLIDE_UNSELECTED, () => slideUnselected(reject))
 
-    Array.from(animEls, (anim, i) => {
-      const prev = animEls[i - 1]
+      const playingAnim = anim.play()
 
-      anim.beforePlaying()
-
-      if (anim.start === 'on-click') {
-        console.warn('TODO: NOT IMPLEMENTED')
-
-      } else if (anim.start === 'after-prev') {
-        if (prev && !Number.isNaN(Number(prev.duration))) {
-          const timeout = setTimeout(() => this.playAnim(anim), Number(prev.duration))
-
-          this.timeoutIds.push(timeout)
-        } else this.playAnim(anim)
-
-      } else {
-        this.playAnim(anim)
+      if (next?.start === 'after-prev') {
+        playingAnim.finished.then(() => resolve())
+      } else if (next?.start === 'with-prev' || !next) {
+        resolve()
       }
+
+      playingAnim.finished
+        .then(() => this.remainingAnims--)
+        .then(() => anim.removeEventListener(SLIDE_UNSELECTED, () => slideUnselected(reject)))
     })
   }
 
-  protected slideUnselected() {
-    clearTimeout(this.timeoutIds.pop())
-    Array.from(this.querySelectorAll<Anim>('[anim-id]'), anim => anim.finish())
+  protected async slideSelected() {
+    const animEls = Array.from(this.getAnims())
+
+    this.remainingAnims = animEls.length
+
+    animEls.map(anim => anim.beforePlaying())
+
+    for (const [i, anim] of animEls.entries()) {
+      const next = animEls[i + 1]
+
+      await this.playAnim(anim, next)
+    }
   }
+
+  protected slideUnselected() {}
 
   connectedCallback() {
     super.connectedCallback()
