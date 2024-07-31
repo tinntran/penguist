@@ -24,7 +24,7 @@ export const fade = anim('fade')
     })
   })
   .opts({
-    duration: 1000
+    duration: 500
   })
 
 export default fade.configureTargetElement()

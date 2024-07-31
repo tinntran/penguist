@@ -1,48 +1,31 @@
-import type { Present, Slide, Anim } from './elements'
-
-function groupAnims(anims: Anim[]) {
-  const result: Anim[][] = [] 
-  let currentGroup: Anim[] = []
-
-  anims.map(anim => {
-    if (anim.start === 'after-prev') {
-      if (currentGroup.length > 0) {
-        result.push(currentGroup);
-        currentGroup = [];
-      }
-
-      result.push([anim])
-    } else if (anim.start === 'with-prev') {
-      currentGroup.push(anim)
-    }
-  })
-
-  if (currentGroup.length > 0) {
-    result.push(currentGroup)
-  }
-
-  return result 
-}
+import type { Present, Slide } from './elements'
 
 export default function defaultShortcuts(present: Present) {
-  let i = 0
-
   function shouldNavigate() {
     const selectedSlide = document.querySelector<Slide>(`p-slide[slot="${present.selectedSlotName}"]`) 
 
-    if (selectedSlide && selectedSlide.remainingAnims > 0) {
-      const anims = groupAnims(Array.from(selectedSlide.getAnims()))
+    if (selectedSlide) {
+      const anims = selectedSlide.getAnims()
+      const animGroups = selectedSlide.getAnimGroups(anims)
 
-      anims[i].map(anim => anim.finish())
+      if (selectedSlide.finishedAnims === anims.length) return true
 
-      i++
+      const currentGroup = animGroups.at(selectedSlide.finishedAnims)
 
-      return false
+      currentGroup?.map(anim => {
+        const animations = anim.getAnimations()
+
+        if (animations.some(anim => anim.playState === 'running')) {
+          anim.finish()
+        } else if (anim.start === 'on-click') {
+          anim.play()
+
+          if (anim.iterations === Number.POSITIVE_INFINITY) selectedSlide.finishedAnims++
+        }
+      })
     }
 
-    i = 0
-
-    return true
+    return false
   }
 
   document.addEventListener('keydown', e => {

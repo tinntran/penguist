@@ -6,7 +6,7 @@ import { property } from 'lit/decorators.js'
 
 export default class Slide extends LitElement {
   @property({ attribute: false })
-  remainingAnims = 0
+  finishedAnims = 0
 
   constructor() {
     super()
@@ -14,46 +14,63 @@ export default class Slide extends LitElement {
   }
 
   getAnims() {
-    return this.querySelectorAll<Anim>('[anim-id]')
+    return Array.from(this.querySelectorAll<Anim>('[anim-id]'))
   }
 
-  private playAnim(anim: Anim, next?: Anim) {
-    function slideUnselected(reject: (reason?: unknown) => void) {
-      reject("The animation has been stopped")
-    }
+  getAnimGroups(anims?: Anim[]) {
+    const result: Anim[][] = []
+    let group: Anim[] = []
 
-    return new Promise<void>((resolve, reject) => {
-      this.addEventListener(SLIDE_UNSELECTED, () => slideUnselected(reject))
+    const arr = anims ? anims : this.getAnims()
 
-      const playingAnim = anim.play()
+    arr.map((anim, i, anims) => {
+      if (anim.start === 'after-prev' || anim.start === 'on-click') {
+        if (group.length > 0) result.push(group)
 
-      if (next?.start === 'after-prev') {
-        playingAnim.finished.then(() => resolve())
-      } else if (next?.start === 'with-prev' || !next) {
-        resolve()
+        group = [anim]
+      } else if (anim.start === 'with-prev') {
+        group.push(anim)
       }
 
-      playingAnim.finished
-        .then(() => this.remainingAnims--)
-        .then(() => anim.removeEventListener(SLIDE_UNSELECTED, () => slideUnselected(reject)))
+      if (i === anims.length - 1) {
+        result.push(group)
+      }
     })
+
+    return result
   }
 
-  protected async slideSelected() {
-    const animEls = Array.from(this.getAnims())
-
-    this.remainingAnims = animEls.length
+  protected async playAnims() {
+    const animEls = this.getAnims()
+    const groupedAnimEls = this.getAnimGroups(animEls)
 
     animEls.map(anim => anim.beforePlaying())
 
-    for (const [i, anim] of animEls.entries()) {
-      const next = animEls[i + 1]
+    for (const anims of groupedAnimEls) {
+      const finishedPromises = anims.map(async anim => {
+        const playingAnim = anim.play()
 
-      await this.playAnim(anim, next)
+        if (anim.start !== 'on-click' && anim.iterations === Number.POSITIVE_INFINITY) this.finishedAnims++
+        else playingAnim.finished.then(() => this.finishedAnims++)
+
+        if (anim.start === 'on-click') anim.pause()
+
+        return playingAnim.finished
+      })
+
+      await Promise.all(finishedPromises)
     }
   }
 
-  protected slideUnselected() {}
+  protected async slideSelected() {
+    await this.playAnims()
+  }
+
+  protected slideUnselected() {
+    this.finishedAnims = 0
+
+    this.getAnims().map(anim => anim.finish())
+  }
 
   connectedCallback() {
     super.connectedCallback()

@@ -29,6 +29,8 @@ export default class Anim extends LitElement {
   @property({ reflect: true })
   direction?: PlaybackDirection
 
+  finished: Promise<Animation | undefined> = Promise.resolve(undefined)
+
   protected keyframes: Keyframe[] | PropertyIndexedKeyframes | null 
   protected options?: KeyframeAnimationOptions
 
@@ -52,12 +54,15 @@ export default class Anim extends LitElement {
     const anim = this.animate(this.keyframes, {
       ...this.options,
       id: this.animId,
-      duration: this.duration,
+      duration: !Number.isNaN(this.duration) ? Number(this.duration) : this.duration,
       delay: this.delay,
       iterations: this.iterations,
       direction: this.direction,
     })
 
+    anim.finished.then(() => this.finish())
+
+    this.finished = anim.finished
     this.whenPlaying(anim)
 
     return anim

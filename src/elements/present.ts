@@ -1,5 +1,5 @@
 import { css, html, LitElement, type PropertyValues } from 'lit'
-import { property, state } from 'lit/decorators.js'
+import { property } from 'lit/decorators.js'
 import type Slide from './slide'
 import defaultShortcuts from '../defaultShortcuts'
 import { SlideSelectedEvent, SlideUnselectedEvent } from '../events'

@@ -53,7 +53,7 @@ export class AnimCreator extends Creator {
     }
   }
 
-  define(prefix = 'panim'): CustomElementConstructor | undefined {
+  define(prefix = 'panim'): CustomElementConstructor {
     return super.define(prefix)
   }
 }

@@ -5,8 +5,10 @@ export class TemplateCreator extends Creator {
   private template = ''
   private styles?: string
   
-  html(template: string) {
-    this.template = template
+  html(template: string | HTMLElement | (() => string)) {
+    if (typeof template === 'string') this.template = template
+    else if (template instanceof HTMLElement) this.template = template.innerHTML
+    else this.template = template()
 
     return this
   }
@@ -29,7 +31,7 @@ export class TemplateCreator extends Creator {
     }
   }
 
-  define(prefix = 'ptemp'): CustomElementConstructor | undefined {
+  define(prefix = 'ptemp'): CustomElementConstructor {
     return super.define(prefix)
   }
 }
