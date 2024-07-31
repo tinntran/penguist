@@ -8,7 +8,7 @@ export default function defaultShortcuts(present: Present) {
       const anims = selectedSlide.getAnims()
       const animGroups = selectedSlide.getAnimGroups(anims)
 
-      if (selectedSlide.finishedAnims === anims.length) return true
+      if (selectedSlide.finishedAnims === anims.length - anims.filter(anim => anim.iterations === Number.POSITIVE_INFINITY).length) return true
 
       const currentGroup = animGroups.at(selectedSlide.finishedAnims)
 
@@ -19,8 +19,6 @@ export default function defaultShortcuts(present: Present) {
           anim.finish()
         } else if (anim.start === 'on-click') {
           anim.play()
-
-          if (anim.iterations === Number.POSITIVE_INFINITY) selectedSlide.finishedAnims++
         }
       })
     }

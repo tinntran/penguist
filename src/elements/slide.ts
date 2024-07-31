@@ -50,7 +50,7 @@ export default class Slide extends LitElement {
       const finishedPromises = anims.map(async anim => {
         const playingAnim = anim.play()
 
-        if (anim.start !== 'on-click' && anim.iterations === Number.POSITIVE_INFINITY) this.finishedAnims++
+        if (anim.iterations === Number.POSITIVE_INFINITY) return
         else playingAnim.finished.then(() => this.finishedAnims++)
 
         if (anim.start === 'on-click') anim.pause()
