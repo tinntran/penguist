@@ -3,7 +3,7 @@ import { v4 } from 'uuid'
 import { SLIDE_SELECTED, SLIDE_UNSELECTED } from '../events'
 import { AnimPlayableLitElement } from '../utils'
 import { templateRegistry } from '../registries'
-import Template from './template'
+import type Template from './template'
 
 export default class Slide extends AnimPlayableLitElement {
   constructor() {

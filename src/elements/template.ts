@@ -1,4 +1,4 @@
-import { type PropertyValues } from 'lit'
+import type { PropertyValues } from 'lit'
 import { state } from 'lit/decorators.js'
 import Mustache from 'mustache'
 import { AnimPlayableLitElement } from '../utils'
@@ -23,9 +23,9 @@ export default class Template extends AnimPlayableLitElement {
   getAnims() {
     if (this.shadowRoot) {
       return Array.from(this.shadowRoot.querySelectorAll<Anim>(animRegistry.getQueryString()))
-    } else {
-      return []
     }
+
+    return []
   }
 
   connectedCallback() {

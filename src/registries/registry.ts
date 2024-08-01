@@ -21,9 +21,9 @@ export class Registry<T> {
 
     if (item) {
       return (JSON.parse(item) as RecordType<T>)[key]
-    } else {
-      return null
     }
+    
+    return null
   }
 
   getAll() {
