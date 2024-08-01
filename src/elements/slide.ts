@@ -1,69 +1,20 @@
-import { html, LitElement } from 'lit'
+import { html } from 'lit'
 import { v4 } from 'uuid'
 import { SLIDE_SELECTED, SLIDE_UNSELECTED } from '../events'
-import type Anim from './anim'
-import { property } from 'lit/decorators.js'
+import { AnimPlayableLitElement } from '../utils'
+import { templateRegistry } from '../registries'
+import Template from './template'
 
-export default class Slide extends LitElement {
-  @property({ attribute: false })
-  finishedAnims = 0
-
+export default class Slide extends AnimPlayableLitElement {
   constructor() {
     super()
     this.slot = this.slot ? this.slot : v4()
   }
 
-  getAnims() {
-    return Array.from(this.querySelectorAll<Anim>('[anim-id]'))
-  }
-
-  getAnimGroups(anims?: Anim[]) {
-    const result: Anim[][] = []
-    let group: Anim[] = []
-
-    const arr = anims ? anims : this.getAnims()
-
-    arr.map((anim, i, anims) => {
-      if (anim.start === 'after-prev' || anim.start === 'on-click') {
-        if (group.length > 0) result.push(group)
-
-        group = [anim]
-      } else if (anim.start === 'with-prev') {
-        group.push(anim)
-      }
-
-      if (i === anims.length - 1) {
-        result.push(group)
-      }
-    })
-
-    return result
-  }
-
-  protected async playAnims() {
-    const animEls = this.getAnims()
-    const groupedAnimEls = this.getAnimGroups(animEls)
-
-    animEls.map(anim => anim.beforePlaying())
-
-    for (const anims of groupedAnimEls) {
-      const finishedPromises = anims.map(async anim => {
-        const playingAnim = anim.play()
-
-        if (anim.iterations === Number.POSITIVE_INFINITY) return
-        else playingAnim.finished.then(() => this.finishedAnims++)
-
-        if (anim.start === 'on-click') anim.pause()
-
-        return playingAnim.finished
-      })
-
-      await Promise.all(finishedPromises)
-    }
-  }
-
   protected async slideSelected() {
-    await this.playAnims()
+    const templates = Array.from(document.querySelectorAll<Template>(templateRegistry.getQueryString()), temp => temp.playAnims())
+
+    await Promise.all([this.playAnims(), ...templates])
   }
 
   protected slideUnselected() {

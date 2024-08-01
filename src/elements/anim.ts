@@ -31,14 +31,8 @@ export default class Anim extends LitElement {
 
   finished: Promise<Animation | undefined> = Promise.resolve(undefined)
 
-  protected keyframes: Keyframe[] | PropertyIndexedKeyframes | null 
-  protected options?: KeyframeAnimationOptions
-
-  constructor(keyframes: Keyframe[] | PropertyIndexedKeyframes | null, options?: KeyframeAnimationOptions) {
+  constructor(protected keyframes: Keyframe[] | PropertyIndexedKeyframes | null, protected options?: KeyframeAnimationOptions) {
     super()
-
-    this.keyframes = keyframes
-    this.options = options
 
     this.duration = this.options?.duration
     this.delay = this.options?.delay

@@ -1,4 +1,6 @@
+import { v4 } from 'uuid'
 import { Anim } from '../elements'
+import { animRegistry } from '../registries'
 import Creator from './creator'
 
 export class AnimCreator extends Creator {
@@ -54,6 +56,8 @@ export class AnimCreator extends Creator {
   }
 
   define(prefix = 'panim'): CustomElementConstructor {
+    animRegistry.register(`${prefix}-${this.name}`, v4())
+
     return super.define(prefix)
   }
 }

@@ -1,8 +1,11 @@
-import { LitElement, type PropertyValues } from 'lit'
+import { type PropertyValues } from 'lit'
 import { state } from 'lit/decorators.js'
 import Mustache from 'mustache'
+import { AnimPlayableLitElement } from '../utils'
+import type Anim from './anim'
+import { animRegistry } from '../registries'
 
-export default class Template extends LitElement {
+export default class Template extends AnimPlayableLitElement {
   @state()
   protected viewAttributes: object = {}
 
@@ -15,6 +18,14 @@ export default class Template extends LitElement {
         .toUpperCase()
         .replace('-', '')
     )
+  }
+
+  getAnims() {
+    if (this.shadowRoot) {
+      return Array.from(this.shadowRoot.querySelectorAll<Anim>(animRegistry.getQueryString()))
+    } else {
+      return []
+    }
   }
 
   connectedCallback() {
