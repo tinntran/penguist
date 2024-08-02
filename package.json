@@ -6,9 +6,8 @@
   "types": "dist/index.d.ts",
   "type": "module",
   "scripts": {
-    "build-pack": "rollup -c",
-    "lint": "biome lint src",
-    "release": "bun build-pack && bun changeset publish"
+    "build": "rollup -c",
+    "lint": "biome lint src"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.8.3",
