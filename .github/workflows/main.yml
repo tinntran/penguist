@@ -1,0 +1,16 @@
+name: CI
+on:
+  push:
+    branches:
+      - "**"
+
+jobs:
+  lint-n-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+
+      - run: bun install
+      - run: bun lint
+      - run: bun build

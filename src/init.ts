@@ -6,3 +6,4 @@ export default function init() {
   customElements.define('p-slide', Slide)
   fade.define()
 }
+
