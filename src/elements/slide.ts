@@ -12,7 +12,8 @@ export default class Slide extends AnimPlayableLitElement {
   }
 
   protected async slideSelected() {
-    const templates = Array.from(document.querySelectorAll<Template>(templateRegistry.getQueryString()), temp => temp.playAnims())
+    const tempQuery = templateRegistry.getQueryString()
+    const templates = tempQuery !== '' ? Array.from(document.querySelectorAll<Template>(tempQuery), temp => temp.playAnims()) : []
 
     await Promise.all([this.playAnims(), ...templates])
   }

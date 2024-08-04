@@ -8,7 +8,9 @@ export default abstract class AnimPlayableLitElement extends LitElement {
   finishedAnims = 0
 
   getAnims() {
-    return Array.from(this.querySelectorAll<Anim>(animRegistry.getQueryString()))
+    const animQuery = animRegistry.getQueryString()
+
+    return animQuery !== '' ? Array.from(this.querySelectorAll<Anim>(animQuery)) : []
   }
 
   getAnimGroups(anims?: Anim[]) {
