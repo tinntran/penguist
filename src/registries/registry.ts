@@ -1,13 +1,11 @@
-type RecordType<T> = { [key: string]: T }
-
 export class Registry<T> {
-  protected records: RecordType<T> = {}
+  protected records: Record<string, T> = {}
 
   constructor(readonly kind: string) {
     this.storeAtSessionStorage({})
   }
 
-  protected storeAtSessionStorage(data?: RecordType<T>) {
+  protected storeAtSessionStorage(data?: typeof this.records) {
     sessionStorage.setItem(this.kind, JSON.stringify(data ? data : this.records))
   }
 
@@ -20,7 +18,7 @@ export class Registry<T> {
     const item = sessionStorage.getItem(this.kind)
 
     if (item) {
-      return (JSON.parse(item) as RecordType<T>)[key]
+      return (JSON.parse(item) as typeof this.records)[key]
     }
     
     return null
