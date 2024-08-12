@@ -29,29 +29,34 @@ export default class Anim extends LitElement {
   @property({ reflect: true })
   direction?: PlaybackDirection
 
+  @property({ reflect: true })
+  easing?: string
+
   finished: Promise<Animation | undefined> = Promise.resolve(undefined)
 
-  constructor(protected keyframes: Keyframe[] | PropertyIndexedKeyframes | null, protected options?: KeyframeAnimationOptions) {
+  constructor(public keyframes: Keyframe[] | PropertyIndexedKeyframes | null, protected options?: KeyframeAnimationOptions) {
     super()
 
     this.duration = this.options?.duration
     this.delay = this.options?.delay
     this.iterations = this.options?.iterations
     this.direction = this.options?.direction
+    this.easing = this.options?.easing
   }
 
   beforePlaying() {}
 
   whenPlaying(_anim: Animation) {}
 
-  play(): Animation {
+  play() {
     const anim = this.animate(this.keyframes, {
       ...this.options,
       id: this.animId,
-      duration: !Number.isNaN(this.duration) ? Number(this.duration) : this.duration,
+      duration: Number.isNaN(this.duration) ? this.duration : Number(this.duration),
       delay: this.delay,
       iterations: this.iterations,
       direction: this.direction,
+      easing: this.easing
     })
 
     anim.finished.then(() => this.finish())

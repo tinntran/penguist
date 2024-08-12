@@ -18,7 +18,7 @@ export default function defaultShortcuts(present: Present) {
         if (animations.some(anim => anim.playState === 'running')) {
           anim.finish()
         } else if (anim.start === 'on-click') {
-          anim.play()
+          anim.getAnimations().map(anim => anim.play())
         }
       })
     }

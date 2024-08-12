@@ -12,6 +12,8 @@ export const fade = anim('fade')
   .beforePlaying(fade => {
     if (fade.direction === 'normal' || fade.direction === 'alternate' || !fade.direction) {
       fade.style.opacity = '0'
+    } else {
+      fade.style.opacity = ''
     }
   })
   .whenPlaying((anim, fade) => {

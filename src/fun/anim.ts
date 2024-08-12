@@ -48,10 +48,6 @@ export class AnimCreator extends Creator {
       whenPlaying(anim: Animation) {
         if (whenPlayingFunc) whenPlayingFunc(anim, this)
       }
-
-      play(): Animation {
-        return super.play()
-      }
     }
   }
 
