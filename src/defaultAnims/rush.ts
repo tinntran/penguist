@@ -1,35 +1,71 @@
+import type { Anim } from '../elements'
 import { anim } from '../fun'
 
-export const rush = anim('rush')
-  .beforePlaying(rush => {
-    rush.keyframes = [
-      {
-        translate: `0 ${window.innerHeight - rush.getBoundingClientRect().y}px` 
-      },
-      {
-        translate: '0'
-      },
-    ]
+function getTranslation(rush: Anim) {
+  if (!rush.getAttribute('data-angle')) rush.setAttribute('data-angle', 'up')
 
-    if (rush.direction === 'normal' || rush.direction === 'alternate' || !rush.direction) {
-      rush.style.translate = `0 ${window.innerHeight - rush.getBoundingClientRect().y}px` 
+  const angle = rush.getAttribute('data-angle')!
+
+  const translate = (x: number, y: number) => `${x}px ${y}px`
+
+  switch (angle) {
+    case 'up':
+      return translate(0, window.innerHeight)
+
+    case 'down':
+      return translate(0, -window.innerHeight)
+
+    case 'left':
+      return translate(-window.innerWidth, 0)
+
+    case 'right':
+      return translate(window.innerWidth, 0)
+
+    default:
+      return translate(0, 0)
+  }
+}
+
+const opts: KeyframeAnimationOptions = {
+  duration: 500,
+  easing: 'ease'
+}
+
+function beforePlaying(rush: Anim) {
+  const translate = getTranslation(rush)
+
+  rush.keyframes = [
+    {
+      translate
+    },
+    {
+      translate: '0'
+    },
+  ]
+
+  if (rush.direction === 'normal' || rush.direction === 'alternate' || !rush.direction) {
+    rush.style.translate = translate
+  } else {
+    rush.style.translate = ''
+  }
+}
+
+function whenPlaying(anim: Animation, rush: Anim) {
+  anim.finished.then(() => {
+    const translate = getTranslation(rush)
+
+    if (rush.direction === 'reverse' || rush.direction === 'alternate-reverse') {
+      rush.style.translate = translate
     } else {
       rush.style.translate = ''
     }
   })
-  .whenPlaying((anim, rush) => {
-    anim.finished.then(() => {
-      if (rush.direction === 'reverse' || rush.direction === 'alternate-reverse') {
-        rush.style.translate = `0 ${window.innerHeight - rush.getBoundingClientRect().y}px` 
-      } else {
-        rush.style.translate = ''
-      }
-    })
-  })
-  .opts({
-    duration: 500,
-    easing: 'ease'
-  })
+}
+
+export const rush = anim('rush')
+  .opts(opts)
+  .beforePlaying(beforePlaying)
+  .whenPlaying(whenPlaying)
 
 export default rush.configureTargetElement()
 
