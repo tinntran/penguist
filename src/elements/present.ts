@@ -1,7 +1,7 @@
 import { css, html, LitElement, type PropertyValues } from 'lit'
 import { property } from 'lit/decorators.js'
 import type Slide from './slide'
-import defaultShortcuts from '../defaultShortcuts'
+import defaultShortcuts from '../default/shortcuts'
 import { SlideSelectedEvent, SlideUnselectedEvent } from '../events'
 
 export default class Present extends LitElement {

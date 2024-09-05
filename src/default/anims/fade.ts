@@ -1,5 +1,5 @@
-import type { Anim } from '../elements'
-import { anim } from '../fun'
+import type { Anim } from '../../elements'
+import { anim } from '../../fun'
 
 const frames: Keyframe[] = [
   {

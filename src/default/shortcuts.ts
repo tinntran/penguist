@@ -1,4 +1,4 @@
-import type { Present, Slide } from './elements'
+import type { Present, Slide } from '../elements'
 
 export default function defaultShortcuts(present: Present) {
   function shouldNavigate() {

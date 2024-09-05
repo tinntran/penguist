@@ -1,8 +1,6 @@
 export class Registry<T> {
   protected records: Record<string, T> = {}
 
-  constructor(readonly kind: string) {}
-
   register(key: string, value: T) {
     this.records[key] = value
   }

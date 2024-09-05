@@ -6,7 +6,5 @@ class AnimRegistry extends Registry<string> {
   }
 }
 
-export const ANIM_REGISTRY_KIND = 'anim-tags'
-
-export default new AnimRegistry(ANIM_REGISTRY_KIND)
+export default new AnimRegistry()
 

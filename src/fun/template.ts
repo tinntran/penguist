@@ -1,4 +1,3 @@
-import { v4 } from 'uuid'
 import { Template } from '../elements'
 import { templateRegistry } from '../registries'
 import Creator from './creator'
@@ -34,7 +33,7 @@ export class TemplateCreator extends Creator {
   }
 
   define(prefix = 'ptemp'): CustomElementConstructor {
-    templateRegistry.register(`${prefix}-${this.name}`, v4())
+    templateRegistry.register(`${prefix}-${this.name}`, this.name)
 
     return super.define(prefix)
   }

@@ -1,10 +1,12 @@
-import type { Anim } from '../elements'
-import { anim } from '../fun'
+import type { Anim } from '../../elements'
+import { anim } from '../../fun'
 
 function getTranslation(rush: Anim) {
+  let angle: string
+
   if (!rush.getAttribute('data-angle')) rush.setAttribute('data-angle', 'up')
 
-  const angle = rush.getAttribute('data-angle')!
+  angle = rush.getAttribute('data-angle') as string
 
   const translate = (x: number, y: number) => `${x}px ${y}px`
 

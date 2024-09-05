@@ -1,7 +1,5 @@
 export default class Creator {
-  name: string
-
-  constructor(name: string) {
+  constructor(public name: string) {
     this.name = name
   }
 

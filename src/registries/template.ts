@@ -6,7 +6,5 @@ class TemplateRegistry extends Registry<string> {
   }
 }
 
-export const TEMPLATE_REGISTRY_KIND = 'temp-tags'
-
-export default new TemplateRegistry(TEMPLATE_REGISTRY_KIND)
+export default new TemplateRegistry()
 

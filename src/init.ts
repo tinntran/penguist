@@ -1,4 +1,4 @@
-import { fade, rush } from './defaultAnims'
+import { fade, rush } from './default/anims'
 import { Present, Slide } from './elements'
 
 export default function init() {
