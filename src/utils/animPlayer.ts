@@ -3,7 +3,14 @@ import type { Anim } from '../elements'
 import { animRegistry } from '../registries'
 import { property } from 'lit/decorators.js'
 
-export default abstract class AnimPlayableLitElement extends LitElement {
+export default interface AnimPlayer {
+  finishedAnims: number,
+  getAnims(): void,
+  getAnimGroups(anim?: Anim[]): Anim[][],
+  playAnims(): Promise<void>
+}
+
+export abstract class AnimPlayableLitElement extends LitElement {
   @property({ attribute: false })
   finishedAnims = 0
 
