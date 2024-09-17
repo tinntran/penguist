@@ -1,4 +1,4 @@
-import { html, LitElement } from 'lit'
+import { html, LitElement, type PropertyValues } from 'lit'
 import { v4 } from 'uuid'
 import { SLIDE_SELECTED, SLIDE_UNSELECTED } from '../events'
 import type { AnimPlayer } from '../utils'
@@ -7,7 +7,10 @@ import { animRegistry } from '../registries'
 import type Anim from './anim'
 
 export default class Slide extends LitElement implements AnimPlayer {
-  @property({ attribute: false })
+  @property()
+  template?: string
+
+  @property({ reflect: true })
   finishedAnims = 0
 
   constructor() {
@@ -22,7 +25,17 @@ export default class Slide extends LitElement implements AnimPlayer {
   protected slideUnselected() {
     this.finishedAnims = 0
 
-    this.getAnims().map(anim => anim.finish())
+    this.getAnims().map(anim => anim.cancel())
+  }
+
+  protected willUpdate(_changedProperties: PropertyValues) {
+    super.willUpdate(_changedProperties)
+
+    if (this.template) {
+      const template = document.querySelector(`template[data-name="${this.template}"]`)
+
+      if (this.shadowRoot && template) this.shadowRoot.innerHTML = template.innerHTML 
+    }
   }
 
   connectedCallback() {
@@ -42,7 +55,14 @@ export default class Slide extends LitElement implements AnimPlayer {
   getAnims() {
     const animQuery = animRegistry.getQueryString()
 
-    return animQuery !== '' ? Array.from(this.querySelectorAll<Anim>(animQuery)) : []
+    if (animQuery === '') return []
+
+    if (this.shadowRoot) return Array.from(this.shadowRoot.querySelectorAll<Anim | HTMLSlotElement>(`${animQuery}, slot`)).flatMap(el => {
+      if (el instanceof HTMLSlotElement) return Array.from(this.querySelectorAll<Anim>(animQuery))
+      else return el
+    })
+
+    else return Array.from(this.querySelectorAll<Anim>(animQuery))
   }
 
   getAnimGroups(anims?: Anim[]) {
