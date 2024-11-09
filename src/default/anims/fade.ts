@@ -18,7 +18,7 @@ function beforePlaying(fade: Anim) {
   if (fade.direction === 'normal' || fade.direction === 'alternate' || !fade.direction) {
     fade.style.opacity = '0'
   } else {
-    fade.style.opacity = ''
+    fade.style.removeProperty('opacity')
   }
 }
 
@@ -27,7 +27,7 @@ function whenPlaying(anim: Animation, fade: Anim) {
     if (fade.direction === 'reverse' || fade.direction === 'alternate-reverse') {
       fade.style.opacity = '0'
     } else {
-      fade.style.opacity = ''
+      fade.style.removeProperty('opacity')
     }
   })
 }

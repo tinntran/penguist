@@ -1,2 +1,2 @@
-export { default as AnimPlayableLitElement } from './animPlayable'
+export type { default as AnimPlayer } from './animPlayer'
 

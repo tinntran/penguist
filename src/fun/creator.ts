@@ -11,7 +11,7 @@ export default class Creator {
     const target = this.configureTargetElement()
 
     if (target) customElements.define(`${prefix}-${this.name}`, target)
-    else throw new Error(`Could not define custom element: ${prefix}-${this.name} owing to the undefined targetElement member`)
+    else throw new Error(`Could not define custom element: ${prefix}-${this.name} owing to targetElement being undefined`)
 
     return target
   }

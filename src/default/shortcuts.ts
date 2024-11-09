@@ -2,7 +2,7 @@ import type { Present, Slide } from '../elements'
 
 export default function defaultShortcuts(present: Present) {
   function shouldNavigate() {
-    const selectedSlide = document.querySelector<Slide>(`p-slide[slot="${present.selectedSlotName}"]`) 
+    const selectedSlide = document.querySelector<Slide>(`p-slide[slot="${present.selectedSlotName}"]`)
 
     if (selectedSlide) {
       const anims = selectedSlide.getAnims()
