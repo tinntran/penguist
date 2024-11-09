@@ -61,10 +61,10 @@ export default class Slide extends LitElement implements AnimPlayer {
 
     if (this.shadowRoot) return Array.from(this.shadowRoot.querySelectorAll<Anim | HTMLSlotElement>(`${animQuery}, slot:not([name])`)).flatMap(el => {
       if (el instanceof HTMLSlotElement) return Array.from(this.querySelectorAll<Anim>(animQuery))
-      else return el
+      return el
     })
 
-    else return Array.from(this.querySelectorAll<Anim>(animQuery))
+    return Array.from(this.querySelectorAll<Anim>(animQuery))
   }
 
   getAnimGroups(anims?: Anim[]) {
