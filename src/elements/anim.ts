@@ -14,7 +14,7 @@ export default class Anim extends LitElement {
   @property({ reflect: true })
   start: AnimStart = 'on-click'
 
-  @property({ attribute: 'anim-id', reflect: true })
+  @property({ attribute: 'anim-id' })
   animId = v4()
 
   @property({ reflect: true })

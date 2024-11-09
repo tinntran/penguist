@@ -25,7 +25,7 @@ export default class Slide extends LitElement implements AnimPlayer {
   protected slideUnselected() {
     this.finishedAnims = 0
 
-    this.getAnims().map(anim => anim.cancel())
+    this.getAnims().map(anim => anim.pause())
   }
 
   protected willUpdate(_changedProperties: PropertyValues) {
@@ -34,7 +34,9 @@ export default class Slide extends LitElement implements AnimPlayer {
     if (this.template) {
       const template = document.querySelector(`template[data-name="${this.template}"]`)
 
-      if (this.shadowRoot && template) this.shadowRoot.innerHTML = template.innerHTML 
+      if (this.shadowRoot && template) this.shadowRoot.innerHTML = template.innerHTML
+    } else {
+      if (this.shadowRoot) this.shadowRoot.innerHTML = '<slot></slot>'
     }
   }
 
@@ -57,7 +59,7 @@ export default class Slide extends LitElement implements AnimPlayer {
 
     if (animQuery === '') return []
 
-    if (this.shadowRoot) return Array.from(this.shadowRoot.querySelectorAll<Anim | HTMLSlotElement>(`${animQuery}, slot`)).flatMap(el => {
+    if (this.shadowRoot) return Array.from(this.shadowRoot.querySelectorAll<Anim | HTMLSlotElement>(`${animQuery}, slot:not([name])`)).flatMap(el => {
       if (el instanceof HTMLSlotElement) return Array.from(this.querySelectorAll<Anim>(animQuery))
       else return el
     })
@@ -102,18 +104,13 @@ export default class Slide extends LitElement implements AnimPlayer {
 
         playingAnim.finished.then(() => this.finishedAnims++)
 
-        if (anim.start === 'on-click') anim.pause()
+        if (anim.start === 'on-click') playingAnim.pause()
 
         return playingAnim.finished
       })
 
       await Promise.all(finishedPromises)
     }
-  }
-
-
-  protected render() {
-    return html`<slot></slot>`
   }
 }
 
