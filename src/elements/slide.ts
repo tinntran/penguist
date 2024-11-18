@@ -1,4 +1,4 @@
-import { html, LitElement, type PropertyValues } from 'lit'
+import { LitElement, type PropertyValues } from 'lit'
 import { v4 } from 'uuid'
 import { SLIDE_SELECTED, SLIDE_UNSELECTED } from '../events'
 import type { AnimPlayer } from '../utils'
@@ -10,22 +10,34 @@ export default class Slide extends LitElement implements AnimPlayer {
   @property()
   template?: string
 
-  @property({ reflect: true })
-  finishedAnims = 0
+  animGroups: Generator<Anim[], void> | null = null
+  prevAnimGroup: Anim[] | null = null
+
+  private animGroupArray: Anim[][] = []
 
   constructor() {
     super()
     this.slot = this.slot ? this.slot : v4()
   }
 
-  protected async slideSelected() {
-    await this.playAnims()
+  protected slideSelected() {
+    const anims = this.getAnims()
+
+    anims.map(anim => anim.beforePlaying())
+
+    this.animGroups = this.getAnimGroups(anims)
+
+    this.animGroupArray = Array.from(this.getAnimGroups(anims))
+
+    this.animGroupArray.map((animGroup) => {
+      if (animGroup[0].start === 'with-prev') {
+        this.playNextAnim()
+      }
+    })
   }
 
   protected slideUnselected() {
-    this.finishedAnims = 0
-
-    this.getAnims().map(anim => anim.pause())
+    this.getAnims().map(anim => anim.finish())
   }
 
   protected willUpdate(_changedProperties: PropertyValues) {
@@ -67,50 +79,71 @@ export default class Slide extends LitElement implements AnimPlayer {
     return Array.from(this.querySelectorAll<Anim>(animQuery))
   }
 
-  getAnimGroups(anims?: Anim[]) {
-    const result: Anim[][] = []
+  *getAnimGroups(anims?: Anim[]) {
     let group: Anim[] = []
 
     const arr = anims ? anims : this.getAnims()
 
-    arr.map((anim, i, anims) => {
-      if (anim.start === 'after-prev' || anim.start === 'on-click') {
-        if (group.length > 0) result.push(group)
+    for (let i = 0; i < arr.length; i++) {
+      const anim = arr[i]
+
+      if (anim.start === 'on-click') {
+        if (group.length > 0) yield group
 
         group = [anim]
-      } else if (anim.start === 'with-prev') {
+      } else {
         group.push(anim)
       }
 
-      if (i === anims.length - 1) {
-        result.push(group)
+      if (i === arr.length - 1) {
+        yield group
       }
-    })
-
-    return result
-  }
-
-  async playAnims() {
-    const animEls = this.getAnims()
-    const groupedAnimEls = this.getAnimGroups(animEls)
-
-    animEls.map(anim => anim.beforePlaying())
-
-    for (const anims of groupedAnimEls) {
-      const finishedPromises = anims.map(async anim => {
-        const playingAnim = anim.play()
-
-        if (anim.iterations === Number.POSITIVE_INFINITY) return
-
-        playingAnim.finished.then(() => this.finishedAnims++)
-
-        if (anim.start === 'on-click') playingAnim.pause()
-
-        return playingAnim.finished
-      })
-
-      await Promise.all(finishedPromises)
     }
   }
+
+  playNextAnim() {
+    if (this.prevAnimGroup) for (const anim of this.prevAnimGroup) {
+      if (anim.getAnimations().some(anim => anim.playState === 'running') && anim.iterations !== Number.POSITIVE_INFINITY) {
+        anim.finish()
+
+        return false
+      }
+    }
+
+    const currentAnim = this.animGroups?.next()
+
+    if (currentAnim?.value) {
+      currentAnim.value.map(anim => anim.play())
+
+      this.prevAnimGroup = currentAnim.value
+
+      return currentAnim.done ? currentAnim.done : false
+    }
+
+    return true
+  }
+
+  //async playAnims() {
+  //  const animEls = this.getAnims()
+  //  const groupedAnimEls = this.getAnimGroups(animEls)
+  //
+  //  animEls.map(anim => anim.beforePlaying())
+  //
+  //  for (const anims of groupedAnimEls) {
+  //    const finishedPromises = anims.map(async anim => {
+  //      const playingAnim = anim.play()
+  //
+  //      if (anim.iterations === Number.POSITIVE_INFINITY) return
+  //
+  //      //playingAnim.finished.then(() => this.finishedAnims++)
+  //
+  //      if (anim.start === 'on-click') playingAnim.pause()
+  //
+  //      return playingAnim.finished
+  //    })
+  //
+  //    await Promise.all(finishedPromises)
+  //  }
+  //}
 }
 

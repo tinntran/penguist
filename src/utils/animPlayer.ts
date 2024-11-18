@@ -1,9 +1,10 @@
 import type { Anim } from '../elements'
 
 export default interface AnimPlayer {
-  finishedAnims: number,
+  animGroups: Generator<Anim[], void> | null,
+  prevAnimGroup: Anim[] | null,
   getAnims(): void,
-  getAnimGroups(anim?: Anim[]): Anim[][],
-  playAnims(): Promise<void>
+  getAnimGroups(anim?: Anim[]): Generator<Anim[], void>,
+  playNextAnim(): boolean
 }
 
