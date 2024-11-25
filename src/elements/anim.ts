@@ -2,7 +2,7 @@ import { css, html, LitElement } from 'lit'
 import { property } from 'lit/decorators.js'
 import { v4 } from 'uuid'
 
-export type AnimStart = 'on-click' | 'with-prev' | 'after-prev'
+export type AnimStart = 'on-click' | 'with-prev'
 
 export default class Anim extends LitElement {
   static styles = css`

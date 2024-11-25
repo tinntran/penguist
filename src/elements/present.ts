@@ -29,6 +29,10 @@ export default class Present extends LitElement {
     this.useShortcuts()
   }
 
+  getCurrentSlide() {
+    return this.querySelector<Slide>(`p-slide[slot="${this.selectedSlotName}"]`)
+  }
+
   protected useShortcuts() {
     defaultShortcuts(this)
   }
@@ -36,12 +40,11 @@ export default class Present extends LitElement {
   protected willUpdate(changedProperties: PropertyValues): void {
     super.willUpdate(changedProperties)
 
-
     if (changedProperties.get('selectedIndex') !== this.selectedIndex) {
       this.selectedSlotName = this.slotNames[this.selectedIndex]
     }
 
-    const selectedSlide = this.querySelector<Slide>(`p-slide[slot="${this.selectedSlotName}"]`)
+    const selectedSlide = this.getCurrentSlide()
     const unselectedSlide = this.querySelector<Slide>(`p-slide[slot="${changedProperties.get('selectedSlotName')}"]`)
 
     selectedSlide?.dispatchEvent(new SlideSelectedEvent({
