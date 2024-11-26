@@ -122,28 +122,5 @@ export default class Slide extends LitElement implements AnimPlayer {
 
     return true
   }
-
-  //async playAnims() {
-  //  const animEls = this.getAnims()
-  //  const groupedAnimEls = this.getAnimGroups(animEls)
-  //
-  //  animEls.map(anim => anim.beforePlaying())
-  //
-  //  for (const anims of groupedAnimEls) {
-  //    const finishedPromises = anims.map(async anim => {
-  //      const playingAnim = anim.play()
-  //
-  //      if (anim.iterations === Number.POSITIVE_INFINITY) return
-  //
-  //      //playingAnim.finished.then(() => this.finishedAnims++)
-  //
-  //      if (anim.start === 'on-click') playingAnim.pause()
-  //
-  //      return playingAnim.finished
-  //    })
-  //
-  //    await Promise.all(finishedPromises)
-  //  }
-  //}
 }
 
