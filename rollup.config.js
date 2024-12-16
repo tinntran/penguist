@@ -46,5 +46,18 @@ export default [
       summary(),
     ],
   },
+  {
+    input: 'src/index.ts',
+    output: {
+      name: 'Penguist',
+      file: 'dist/browser/penguist.js',
+      format: 'iife',
+    },
+    plugins: [
+      typescript(),
+      nodeResolve(),
+      summary(),
+    ],
+  },
 ]
 
