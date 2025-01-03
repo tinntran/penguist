@@ -1,12 +1,12 @@
 # Penguist
-Penguist is an embeddable presenation library written in Typescript, designated to make fast and simple presentations. It can be embedded via a single js file, as well as using npm package.
+Penguist is an embeddable presentation library written in Typescript, allow users to make presentations programmatically with HTML, CSS and Javascript.
 
 <img src="assets/penguist.svg" width="128" alt="logo">
 <br>
 
 ## Index
 - [Example](#example)
-- [*Other contents are under construction 🏗*](#other-contents-are-under-construction-)
+- [Elements](#elements)
 
 ## Example
 ```html
@@ -59,4 +59,40 @@ Penguist is an embeddable presenation library written in Typescript, designated 
 </script>
 ```
 
-## Other contents are under construction 🏗
+## Elements
+[`<p-present>`](#p-present)
+[`<p-slide>`](#p-slide)
+[`<panim-fade>`](#panim-fade)
+[`<panim-rush>`](#panim-rush)
+[`<template data-name="...">`](#template-data-name)
+
+### `<p-present>`
+
+The `p-present` element defines a presentation. A `p-present` element consists of `p-slide` elements, and only one slide will be shown per presentation element.
+
+| Attribute      | Type    | Description
+| -              | -       | -
+| selected-index | Number  | Determines which slide will be shown (start from 0)
+
+### `<p-slide>`
+
+The `p-slide` element defines a slide in a `p-present` element. Only one slide is shown per presentation element.
+
+| Attribute      | Type    | Description
+| -              | -       | -
+| slot           | String  | Behaves like an HTML slot attribute and is a uuid string if user do not assign it. We do not recommend changing it twice or more because the slot name is only saved once by the presentation element.
+| template       | String  | Applies a template from a `<template data-name="...">` that matches its value.
+
+### `<template data-name="...">`
+
+The `<template data-name="...">` element is an HTML `<template>` element that defines a template for slide elements.
+| Attribute      | Type    | Description
+| -              | -       | -
+| data-name      | String  | Declares a name for the template.
+
+### `<panim-fade>`
+
+> I'm lazy rn
+
+### `<panim-rush>`
+

@@ -1,7 +1,8 @@
 export { default as init } from './init'
-export * from './registries'
+export * as registries from './registries'
 export * from './fun'
-export * from './elements'
+export * as elements from './elements'
 export * from './default'
+export * as events from './events'
 export * as utils from './utils'
 
