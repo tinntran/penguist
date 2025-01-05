@@ -1,7 +1,7 @@
 # Penguist
 Penguist is an embeddable presentation library written in Typescript, allow users to make presentations programmatically with HTML, CSS and Javascript.
 
-<img src="assets/penguist.svg" width="128" alt="logo">
+<img src="https://raw.githubusercontent.com/tinntran/penguist/refs/heads/master/assets/penguist.svg" width="128" alt="logo">
 <br>
 
 ## Index
