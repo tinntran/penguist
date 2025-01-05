@@ -1,5 +1,11 @@
 # penguist
 
+## 0.2.0
+
+### Minor Changes
+
+- Interactive elements & temporary documentations
+
 ## 0.1.0
 
 ### Minor Changes
