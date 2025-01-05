@@ -1,10 +1,8 @@
-import type { Slide } from '../elements'
+export const SLIDE_SELECTED_EVENT = 'penguist:selected'
 
-export const SLIDE_SELECTED = 'penguist:selected'
-
-export class SlideSelectedEvent extends CustomEvent<Slide> {
-  constructor(eventInitDict: CustomEventInit<Slide>) {
-    super(SLIDE_SELECTED, eventInitDict)
+export class SlideSelectedEvent extends CustomEvent<string> {
+  constructor(eventInitDict: CustomEventInit<string>) {
+    super(SLIDE_SELECTED_EVENT, eventInitDict)
   }
 }
 

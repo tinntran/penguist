@@ -1,6 +1,6 @@
 import { LitElement, type PropertyValues } from 'lit'
 import { v4 } from 'uuid'
-import { SLIDE_SELECTED, SLIDE_UNSELECTED } from '../events'
+import { SLIDE_SELECTED_EVENT, SLIDE_UNSELECTED_EVENT } from '../events'
 import type { AnimPlayer } from '../utils'
 import { property } from 'lit/decorators.js'
 import { animRegistry } from '../registries'
@@ -55,15 +55,15 @@ export default class Slide extends LitElement implements AnimPlayer {
   connectedCallback() {
     super.connectedCallback()
 
-    this.addEventListener(SLIDE_SELECTED, this.slideSelected)
-    this.addEventListener(SLIDE_UNSELECTED, this.slideUnselected)
+    this.addEventListener(SLIDE_SELECTED_EVENT, this.slideSelected)
+    this.addEventListener(SLIDE_UNSELECTED_EVENT, this.slideUnselected)
   }
 
   disconnectedCallback() {
     super.disconnectedCallback()
 
-    this.removeEventListener(SLIDE_SELECTED, this.slideSelected)
-    this.removeEventListener(SLIDE_UNSELECTED, this.slideUnselected)
+    this.removeEventListener(SLIDE_SELECTED_EVENT, this.slideSelected)
+    this.removeEventListener(SLIDE_UNSELECTED_EVENT, this.slideUnselected)
   }
 
   getAnims() {

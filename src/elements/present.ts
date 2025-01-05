@@ -23,6 +23,8 @@ export default class Present extends LitElement {
   @property({ attribute: false })
   selectedSlotName?: string
 
+  isInteractiveClicked = false
+
   constructor() {
     super()
 
@@ -50,13 +52,13 @@ export default class Present extends LitElement {
     selectedSlide?.dispatchEvent(new SlideSelectedEvent({
       bubbles: true,
       composed: true,
-      detail: selectedSlide
+      detail: selectedSlide.slot
     }))
 
     unselectedSlide?.dispatchEvent(new SlideUnselectedEvent({
       bubbles: true,
       composed: true,
-      detail: unselectedSlide
+      detail: unselectedSlide.slot
     }))
   }
 
@@ -65,6 +67,14 @@ export default class Present extends LitElement {
     
     Array.from(document.querySelectorAll<Slide>('p-present > p-slide'), slide => {
       this.slotNames.push(slide.slot)
+    })
+
+    Array.from(document.querySelectorAll<HTMLElement>('[data-interactive=""], [data-interactive="true"]'), el => {
+      el.style.cursor = 'pointer'
+
+      el.addEventListener('mousedown', () => {
+        this.isInteractiveClicked = true
+      })
     })
 
     this.selectedSlotName = this.slotNames[this.selectedIndex]

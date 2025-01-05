@@ -17,10 +17,12 @@ export default function defaultShortcuts(present: Present) {
     const selectedSlide = present.getCurrentSlide()
 
     if (e.button === 0) {
-      const shouldNavigate = selectedSlide?.playNextAnim()
+      const shouldNavigate = selectedSlide?.playNextAnim() && !present.isInteractiveClicked
 
       if (shouldNavigate && present.selectedIndex < present.slotNames.length - 1) present.selectedIndex++
     }
+
+    present.isInteractiveClicked = false
   })
 }
 
