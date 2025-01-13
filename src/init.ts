@@ -13,5 +13,7 @@ export default function init() {
 
   fade.define()
   rush.define()
+
+  return document.querySelector('p-present')
 }
 
