@@ -5,12 +5,6 @@ import { v4 } from 'uuid'
 export type AnimStart = 'on-click' | 'with-prev'
 
 export default class Anim extends LitElement {
-  static styles = css`
-    :host {
-      display: block;
-    }
-  `
-
   @property({ reflect: true })
   start: AnimStart = 'on-click'
 
