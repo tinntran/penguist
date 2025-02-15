@@ -1,6 +1,10 @@
 # Penguist
 Penguist is an embeddable presentation library written in Typescript, allow users to make presentations programmatically with HTML, CSS and Javascript.
 
+> [!Warning]
+> This project has been deprecated.
+> use its successor https://github.com/tinntran/peng
+
 <img src="https://raw.githubusercontent.com/tinntran/penguist/refs/heads/master/assets/penguist.svg" width="128" alt="logo">
 <br>
 
@@ -62,8 +66,6 @@ Penguist is an embeddable presentation library written in Typescript, allow user
 ## Elements
 [`<p-present>`](#p-present)
 [`<p-slide>`](#p-slide)
-[`<panim-fade>`](#panim-fade)
-[`<panim-rush>`](#panim-rush)
 [`<template data-name="...">`](#template-data-name)
 
 ### `<p-present>`
@@ -89,10 +91,4 @@ The `<template data-name="...">` element is an HTML `<template>` element that de
 | Attribute      | Type    | Description
 | -              | -       | -
 | data-name      | String  | Declares a name for the template.
-
-### `<panim-fade>`
-
-> I'm lazy rn
-
-### `<panim-rush>`
 
